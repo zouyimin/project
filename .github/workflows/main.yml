@@ -57,7 +57,7 @@ jobs:
         
       # 生成zip文件
       - name: zip dist
-        run: zip -r project.zip /
+        run: zip -r project.zip dist/
 
       # 部署 https://github.com/JamesIves/github-pages-deploy-action
       - name: Deploy 🚀
