@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   server: {
     // 服务器主机名，默认是 localhost
     host: 'localhost',
