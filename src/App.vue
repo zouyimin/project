@@ -2,7 +2,7 @@
   <div class="carousel">
     <div
       class="carousel-inner"
-      :class="{noTransition}"
+      :class="{ noTransition }"
       :style="{
         transform: `translateX(-${currentSlide}px)`,
         width: `${items.length * slideWidth}px`,
@@ -19,37 +19,37 @@
  
 <script>
 import { ref, reactive, onMounted, onUnmounted } from "vue";
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 export default {
   setup() {
     const slideWidth = ref(800); // 视图容器的宽
-    const timing = 2000 // 轮播时间
+    const timing = 2000; // 轮播时间
     const items = reactive([]);
     let currentIndex = 1;
     let currentSlide = ref(800);
     let nextTimer, prevTimer;
-    let noTransition = ref(false)
+    let noTransition = ref(false);
 
     const fechData = async () => {
       const data = await request({
-        url: '/all.json',
-        method: 'get'
-      })
-      return data.content.split('')
-    }
+        url: "/all.json",
+        method: "get",
+      });
+      return data.content.split("");
+    };
 
     const next = () => {
       if (currentIndex === items.length - 1) {
-        clearInterval(nextTimer)
-        nextTimer = null
-        noTransition.value = true // 清除动画效果
-        currentIndex = 0 // 将视图切到第一个item
+        clearInterval(nextTimer);
+        nextTimer = null;
+        noTransition.value = true; // 清除动画效果
+        currentIndex = 0; // 将视图切到第一个item
         currentSlide.value = currentIndex * slideWidth.value;
         setTimeout(() => {
-          autoNext()
+          autoNext();
         }, 20);
-        return
+        return;
       }
       currentIndex++;
       currentSlide.value = currentIndex * slideWidth.value;
@@ -57,34 +57,34 @@ export default {
 
     const prev = () => {
       if (currentIndex === 0) {
-        clearInterval(prevTimer)
-        prevTimer = null
-        noTransition.value = true // 清除动画效果
-        currentIndex = items.length - 1 // 将视图切到最后一个item
+        clearInterval(prevTimer);
+        prevTimer = null;
+        noTransition.value = true; // 清除动画效果
+        currentIndex = items.length - 1; // 将视图切到最后一个item
         currentSlide.value = currentIndex * slideWidth.value;
         setTimeout(() => {
-          autoPrev()
+          autoPrev();
         }, 20);
-        return
+        return;
       }
       currentIndex--;
       currentSlide.value = currentIndex * slideWidth.value;
     };
 
     const autoNext = () => {
-      if (nextTimer) return // 避免设置多个定时器
-      clearInterval(prevTimer)
-      prevTimer = null
-      noTransition.value = false
+      if (nextTimer) return; // 避免设置多个定时器
+      clearInterval(prevTimer);
+      prevTimer = null;
+      noTransition.value = false;
       next();
       nextTimer = setInterval(next, timing);
     };
 
     const autoPrev = () => {
-      if (prevTimer) return
-      clearInterval(nextTimer)
-      nextTimer = null
-      noTransition.value = false
+      if (prevTimer) return;
+      clearInterval(nextTimer);
+      nextTimer = null;
+      noTransition.value = false;
       prev();
       prevTimer = setInterval(prev, timing);
     };
@@ -92,14 +92,14 @@ export default {
     onMounted(() => {
       fechData().then((res) => {
         for (const v of res) {
-          items.push(v)
+          items.push(v);
         }
-        items.unshift(res[res.length - 1]) // 拼接items
+        items.unshift(res[res.length - 1]); // 拼接items
         // console.log(items)
         setTimeout(() => {
-          autoNext()
+          autoNext();
         }, timing);
-      })
+      });
     });
 
     onUnmounted(() => {
@@ -107,7 +107,14 @@ export default {
       clearTimeout(prevTimer);
     });
 
-    return { currentSlide, slideWidth, autoNext, autoPrev, items, noTransition };
+    return {
+      currentSlide,
+      slideWidth,
+      autoNext,
+      autoPrev,
+      items,
+      noTransition,
+    };
   },
 };
 </script>
