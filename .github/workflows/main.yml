@@ -54,6 +54,10 @@ jobs:
       # 打包
       - name: Build application 🔧
         run: pnpm run build
+        
+      # 生成zip文件
+      - name: zip dist
+        run: zip -r project.zip /
 
       # 部署 https://github.com/JamesIves/github-pages-deploy-action
       - name: Deploy 🚀
